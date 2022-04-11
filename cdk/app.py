@@ -6,7 +6,11 @@ from aws_cdk import (
     Environment,
     Stack,
     Duration,
+    aws_certificatemanager as acm,
     aws_cloudfront as cloudfront,
+    aws_cloudfront_origins as origins,
+    aws_route53 as route53,
+    aws_route53_targets as targets,
     aws_s3 as s3,
     aws_s3_deployment as s3_deployment,
 )
@@ -15,6 +19,15 @@ class OptimizelyWebStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
+
+        domain_name = self.node.try_get_context('domainName')
+
+        subdomain = 'web.{}'.format(domain_name)
+
+        zone = route53.HostedZone.from_lookup(
+            self, 'Zone',
+            domain_name=domain_name,
+        )
 
         bucket = s3.Bucket(self, 'Storage')
 
@@ -30,29 +43,43 @@ class OptimizelyWebStack(Stack):
 
         bucket.grant_read(origin_identity.grant_principal)
 
-        origin = cloudfront.SourceConfiguration(
-            s3_origin_source=cloudfront.S3OriginConfig(
-                s3_bucket_source=bucket,
-                origin_access_identity=origin_identity,
-            ),
-            behaviors=[
-                cloudfront.Behavior(
-                    default_ttl=Duration.days(0),
-                    min_ttl=Duration.days(0),
-                    max_ttl=Duration.days(0),
-                    is_default_behavior=True,
-                )
-            ]
+        certificate = acm.DnsValidatedCertificate(
+            self, 'Certificate',
+            domain_name=subdomain,
+            hosted_zone=zone,
+            region='us-east-1',
         )
 
-        distribution = cloudfront.CloudFrontWebDistribution(
+        distribution = cloudfront.Distribution(
             self, 'CDN',
-            price_class=cloudfront.PriceClass.PRICE_CLASS_ALL,
-            origin_configs=[origin],
-            # alias_configuration=cloudfront.AliasConfiguration(
-            #     acm_cert_ref=certificate.certificate_arn,
-            #     names=[subdomain],
-            # )
+            default_root_object='index.html',
+            domain_names=[subdomain],
+            certificate=certificate,
+            default_behavior=cloudfront.BehaviorOptions(
+                origin=origins.S3Origin(
+                    bucket=bucket,
+                    origin_access_identity=origin_identity,
+                ),
+                viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+            )
+        )
+
+        target = route53.RecordTarget.from_alias(
+            alias_target=targets.CloudFrontTarget(distribution)
+        )
+
+        route53.AaaaRecord(
+            self, 'DnsRecordIpv6',
+            record_name=subdomain,
+            target=target,
+            zone=zone,
+        )
+
+        route53.ARecord(
+            self, 'DnsRecordIpv4',
+            record_name=subdomain,
+            target=target,
+            zone=zone,
         )
 
 
