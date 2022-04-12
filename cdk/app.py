@@ -13,6 +13,7 @@ from aws_cdk import (
     aws_route53_targets as targets,
     aws_s3 as s3,
     aws_s3_deployment as s3_deployment,
+    aws_synthetics_alpha as synthetics,
 )
 
 class OptimizelyWebStack(Stack):
@@ -80,6 +81,20 @@ class OptimizelyWebStack(Stack):
             record_name=subdomain,
             target=target,
             zone=zone,
+        )
+
+        canary = synthetics.Canary(self, 'Canary',
+            schedule=synthetics.Schedule.rate(Duration.minutes(1)),
+            success_retention_period=Duration.days(1),
+            failure_retention_period=Duration.days(7),
+            test=synthetics.Test.custom(
+                code=synthetics.Code.from_asset('./src/canary'),
+                handler='index.handler'
+            ),
+            runtime=synthetics.Runtime.SYNTHETICS_NODEJS_PUPPETEER_3_5,
+            environment_variables={
+                'URL': 'https://{}'.format(subdomain)
+            }
         )
 
 
