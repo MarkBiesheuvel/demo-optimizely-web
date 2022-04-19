@@ -26,15 +26,23 @@
           <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm">
               <div class="card-header py-3">
-                <h4 class="my-0 fw-normal">Original</h4>
+                <h4 class="my-0 fw-normal">Query parameters</h4>
               </div>
               <div class="card-body">
-                <p>
-                  By clicking the button below, you will be placed in the corresponding variation of the experiment.
-                </p>
-                <button type="button" class="w-100 btn btn-lg btn-outline-dark" id="original" >
-                  Select
-                </button>
+                <div class="d-grid col-6 mx-auto gap-2">
+                  <a href="?optimizely_disable=true" class="btn btn-outline-danger">
+                    Disable Optimizely
+                  </a>
+                  <a href="?optimizely_x=21350420755" class="btn btn-outline-primary">
+                    Original variant
+                  </a>
+                  <a href="?optimizely_x=21365561407" class="btn btn-outline-primary">
+                    Variant #1
+                  </a>
+                  <a href="?optimizely_log=info" class="btn btn-outline-success">
+                    Increase log level
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -42,15 +50,10 @@
           <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm">
               <div class="card-header py-3">
-                <h4 class="my-0 fw-normal">Variant #1</h4>
+                <h4 class="my-0 fw-normal">Visual tags</h4>
               </div>
               <div class="card-body">
-                <p>
-                  By clicking the button below, you will be placed in the corresponding variation of the experiment.
-                </p>
-                <button type="button" class="w-100 btn btn-lg btn-outline-dark" id="variation1" >
-                  Select
-                </button>
+                <!-- TODO: add some data that can be fetched by visual tags -->
               </div>
             </div>
           </div>
