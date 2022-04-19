@@ -9,6 +9,16 @@
   const optimizely = window.optimizely
   const data = optimizely.get('data')
 
+  // Push a custom attribute indicating whether the visitor is a canary or not
+  // Amazon CloudWatch Synthetics Canaries use a unique User Agent
+  const isCanary = window.navigator.userAgent.includes('CloudWatchSynthetics')
+  optimizely.push({
+    type: 'user',
+    attributes: {
+      isCanary: String(isCanary)
+    }
+  })
+
   // Enable logging
   optimizely.push({
     type: 'log',
