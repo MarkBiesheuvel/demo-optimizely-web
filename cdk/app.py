@@ -9,6 +9,7 @@ from aws_cdk import (
     aws_certificatemanager as acm,
     aws_cloudfront as cloudfront,
     aws_cloudfront_origins as origins,
+    aws_lambda as lambda_,
     aws_route53 as route53,
     aws_route53_targets as targets,
     aws_s3 as s3,
@@ -21,29 +22,45 @@ class OptimizelyWebStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        # Determine domain name and sub domain from the context variables
         domain_name = self.node.try_get_context('domainName')
-
         subdomain = 'web.{}'.format(domain_name)
 
+        # Assumption: Hosted Zone is created outside of this project
+        # Fetch the Route53 Hosted Zone
         zone = route53.HostedZone.from_lookup(
             self, 'Zone',
             domain_name=domain_name,
         )
 
+        # Bucket to store static website files, such as HTML and JavaScript
         bucket = s3.Bucket(self, 'Storage')
 
+        # Webhook to receive updates from Optimizely
+        function = lambda_.Function(self, 'Webhook',
+            runtime=lambda_.Runtime.NODEJS_14_X,
+            handler='index.handler',
+            code=lambda_.Code.from_asset('./src/webhook'),
+            # TODO: add FunctionUrlConfig once available
+        )
+        bucket.grant_write(function)
+
+        # Copy local files to S3
         s3_deployment.BucketDeployment(
             self, 'Deployment',
             sources=[
                 s3_deployment.Source.asset('./src/html'),
             ],
             destination_bucket=bucket,
+            prune=False,
+            retain_on_delete=False,
         )
 
+        # Give a CloudFront OAI access to the S3 bucket
         origin_identity = cloudfront.OriginAccessIdentity(self, 'Identity')
-
         bucket.grant_read(origin_identity.grant_principal)
 
+        # Public SSL certificate for subdomain
         certificate = acm.DnsValidatedCertificate(
             self, 'Certificate',
             domain_name=subdomain,
@@ -51,6 +68,7 @@ class OptimizelyWebStack(Stack):
             region='us-east-1',
         )
 
+        # Content Delivery Network
         distribution = cloudfront.Distribution(
             self, 'CDN',
             default_root_object='index.html',
@@ -65,17 +83,16 @@ class OptimizelyWebStack(Stack):
             )
         )
 
+        # Both IPv4 and IPv6 addresses
         target = route53.RecordTarget.from_alias(
             alias_target=targets.CloudFrontTarget(distribution)
         )
-
         route53.AaaaRecord(
             self, 'DnsRecordIpv6',
             record_name=subdomain,
             target=target,
             zone=zone,
         )
-
         route53.ARecord(
             self, 'DnsRecordIpv4',
             record_name=subdomain,
@@ -83,6 +100,7 @@ class OptimizelyWebStack(Stack):
             zone=zone,
         )
 
+        # Generate synthetic traffic to the website
         canary = synthetics.Canary(self, 'Canary',
             schedule=synthetics.Schedule.rate(Duration.minutes(1)),
             success_retention_period=Duration.days(1),
