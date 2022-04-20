@@ -80,6 +80,7 @@ class OptimizelyWebStack(Stack):
                     origin_access_identity=origin_identity,
                 ),
                 viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                cache_policy=cloudfront.CachePolicy.CACHING_DISABLED,
             )
         )
 

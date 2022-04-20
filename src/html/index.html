@@ -22,13 +22,16 @@
       </header>
 
       <main>
-        <div class="row row-cols-1 row-cols-md-2 mb-3">
+        <div class="row row-cols-1 row-cols-lg-3 mb-3">
           <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm">
               <div class="card-header py-3">
                 <h4 class="my-0 fw-normal">Query parameters</h4>
               </div>
               <div class="card-body">
+                <p class="card-text">
+                  By adding a query parameter at the end of the URL, it is possible to force certain settings within Optimizely.
+                </p>
                 <div class="d-grid gap-2">
                   <a href="?optimizely_disable=true" class="btn btn-outline-danger">
                     Disable Optimizely
@@ -39,9 +42,33 @@
                   <a href="?optimizely_x=21365561407" class="btn btn-outline-primary">
                     Variant #1
                   </a>
-                  <a href="?optimizely_log=info" class="btn btn-outline-secondary">
+                  <a href="?optimizely_log=info" class="btn btn-outline-dark">
                     Increase log level
                   </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">Hold events</h4>
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  By default, this page does run experiments but does not send any events back to Optimizely. However, events are queued in LocalStorage, so once you allow tracking, all events will be send to Optimizely.
+                </p>
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn btn-outline-success" id="consent-true">
+                    Allow tracking
+                  </button>
+                  <button type="button" class="btn btn btn-outline-danger" id="consent-false">
+                    Disallow tracking
+                  </button>
+                  <button type="button" class="btn btn btn-outline-dark" id="consent-null">
+                    Reset
+                  </button>
                 </div>
               </div>
             </div>
@@ -67,11 +94,11 @@
           <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm border-primary">
               <div class="card-header py-3 text-white bg-primary border-primary">
-                <h4 class="my-0 fw-normal">Custom event</h4>
+                <h4 class="my-0 fw-normal">Click event</h4>
               </div>
               <div class="card-body">
                 <p>
-                  By clicking the button below, you will trigger a custom event.
+                  By clicking the button below, you will trigger a click event.
                 </p>
                 <button type="button" class="w-100 btn btn-lg btn-outline-primary" id="addtocart">
                   Add to cart
@@ -83,11 +110,11 @@
           <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm border-success">
               <div class="card-header py-3 text-white bg-success border-success">
-                <h4 class="my-0 fw-normal">Revenue event</h4>
+                <h4 class="my-0 fw-normal">Custom event</h4>
               </div>
               <div class="card-body">
                 <p>
-                  By clicking the button below, you will trigger a revenue event.
+                  By clicking the button below, you will trigger a custom event.
                 </p>
                 <button type="button" class="w-100 btn btn-lg btn-outline-success" id="purchase">
                   Purchase
