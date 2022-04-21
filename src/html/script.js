@@ -1,62 +1,95 @@
 (() => {
-  // Store in locally scoped variable. This improves minifying
-  const optimizely = window.optimizely
+  // Initialize the optimizely variable if it is not available yet
+  const optimizely = window.optimizely = window.optimizely || []
 
-  // Optimizely needs to be initialized in order to use the Utils lib
-  if (typeof optimizely !== 'object') {
-    console.error('Optimizely not found')
-    return
+  const getConsent = () => {
+    // Fetch choice from LocalStorage
+    return window.localStorage.getItem('didConsent')
   }
 
-  const utils = optimizely.get('utils')
-
-  const addClickListener = (selector, callback) => {
-    // Wait until element is available in DOM
-    utils.waitForElement(selector).then((element) => {
-      // Add click listener to button
-      element.onclick = callback
-    })
+  const setConsent = (didConsent) => {
+    // Persist the choice in LocalStorage
+    window.localStorage.setItem('didConsent', didConsent)
+    return didConsent
   }
 
-  addClickListener('button#purchase', () => {
+  const toggleEvents = (didConsent) => {
+    // LocalStorage only works with string, hence the string comparison
+    const type = (didConsent === 'true') ? 'sendEvents' : 'holdEvents'
+
+    // Either hold or send events based on the choice
+    optimizely.push({type})
+  }
+
+  const customEvent = (name, revenue) => {
     // Push revenue to Optimizely
     optimizely.push({
       type: 'event',
-      eventName: 'purchase',
+      eventName: name,
       tags: {
-        revenue: 2195 // €21.95
+        revenue: (revenue * 100).toFixed()
       }
     })
-  })
+  }
 
-  addClickListener('button#consent-true', () => {
-    // Store this consent in LocalStorage
-    window.localStorage.setItem('didConsent', 'true')
-
-    // Send all events that were queued
+  const customAttribute = (key, value) => {
+    // Push a custom attribute
     optimizely.push({
-      type: 'sendEvents'
+      type: 'user',
+      attributes: {
+        [key]: String(value)
+      }
     })
-  })
+  }
 
-  addClickListener('button#consent-false', () => {
-    // Store this consent in LocalStorage
-    window.localStorage.setItem('didConsent', 'false')
+  const foo = () => {
+    const utils = optimizely.get('utils')
 
-    // Disable Optimizely tracking
-    optimizely.push({
-      type: 'disable',
-      scope: 'tracking'
+    // This function depends on utils
+    const addClickListener = (selector, callback) => {
+      // Wait until element is available in DOM
+      utils.waitForElement(selector).then((element) => {
+        // Add click listener to button
+        element.onclick = callback
+      })
+    }
+
+    addClickListener('button#purchase', () => {
+      customEvent('purchase', 21.95)
     })
-  })
 
-  addClickListener('button#consent-null', () => {
-    // Store this consent in LocalStorage
-    window.localStorage.setItem('didConsent', null)
-
-    // Disable Optimizely tracking
-    optimizely.push({
-      type: 'holdEvents'
+    addClickListener('button#consent-true', () => {
+      toggleEvents(setConsent('true'))
     })
+
+    addClickListener('button#consent-false', () => {
+      toggleEvents(setConsent('false'))
+    })
+
+    addClickListener('button#consent-null', () => {
+      toggleEvents(setConsent(null))
+    })
+  }
+
+  // Amazon CloudWatch Synthetics Canaries use a unique User Agent.
+  // TODO: expand bot detection
+  const isCanary = window.navigator.userAgent.includes('CloudWatchSynthetics')
+
+  // Push isCanary as a custom attribute
+  customAttribute('isCanary', isCanary)
+
+  // Either send or hold events based on tracking consent (only if user is not a robot and thus human)
+  if (!isCanary) {
+    toggleEvents(getConsent())
+  }
+
+  // Only run the part of the code that depends on the optimizely variable after initialization
+  optimizely.push({
+    type: 'addListener',
+    filter: {
+      type: 'lifecycle',
+      name: 'pageActivated'
+    },
+    handler: foo
   })
 })()
