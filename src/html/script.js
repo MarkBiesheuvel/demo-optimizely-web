@@ -1,6 +1,6 @@
 (() => {
-  // Initialize the optimizely variable if it is not available yet
-  const optimizely = window.optimizely = window.optimizely || []
+  // Initialize the optimizely variable if it is not available yet and store it in a locally scoped variable
+  let optimizely = window.optimizely = window.optimizely || []
 
   const getConsent = () => {
     // Fetch choice from LocalStorage
@@ -42,7 +42,10 @@
     })
   }
 
-  const foo = () => {
+  const intialize = () => {
+    // Now that window.optimizely has been Initialized; store it in our locally scoped variable again
+    optimizely = window.optimizely
+
     const utils = optimizely.get('utils')
 
     // This function depends on utils
@@ -88,8 +91,8 @@
     type: 'addListener',
     filter: {
       type: 'lifecycle',
-      name: 'pageActivated'
+      name: 'initialized'
     },
-    handler: foo
+    handler: intialize
   })
 })()
