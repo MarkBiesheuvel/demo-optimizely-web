@@ -18,7 +18,7 @@
     const type = (didConsent === 'true') ? 'sendEvents' : 'holdEvents'
 
     // Either hold or send events based on the choice
-    optimizely.push({type})
+    optimizely.push({ type })
   }
 
   const customEvent = (name, revenue) => {
@@ -27,7 +27,7 @@
       type: 'event',
       eventName: name,
       tags: {
-        revenue: (revenue * 100).toFixed()
+        revenue: window.Math.round(revenue * 100) // Convert to cents
       }
     })
   }
