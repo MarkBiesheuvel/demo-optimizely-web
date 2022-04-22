@@ -1,15 +1,29 @@
 (() => {
+  const LOCAL_STORAGE_KEY_VISITOR_ID = 'bringYourOwnVisitorId'
+  const LOCAL_STORAGE_KEY_CONSENT = 'didConsent'
+
   // Initialize the optimizely variable if it is not available yet and store it in a locally scoped variable
   let optimizely = window.optimizely = window.optimizely || []
 
+  const setVisitorId = () => {
+    // Try to find visitor ID in Local Storage
+    let id = window.localStorage.getItem(LOCAL_STORAGE_KEY_VISITOR_ID)
+
+    if (!id) {
+      // Create a random ID if it does not exist yet
+      id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16)
+      window.localStorage.setItem(LOCAL_STORAGE_KEY_VISITOR_ID, id)
+    }
+  }
+
   const getConsent = () => {
     // Fetch choice from LocalStorage
-    return window.localStorage.getItem('didConsent')
+    return window.localStorage.getItem(LOCAL_STORAGE_KEY_CONSENT)
   }
 
   const setConsent = (didConsent) => {
     // Persist the choice in LocalStorage
-    window.localStorage.setItem('didConsent', didConsent)
+    window.localStorage.setItem(LOCAL_STORAGE_KEY_CONSENT, didConsent)
     return didConsent
   }
 
@@ -85,6 +99,9 @@
   if (!isCanary) {
     toggleEvents(getConsent())
   }
+
+  // Set a custom visitor idea
+  setVisitorId()
 
   // Only run the part of the code that depends on the optimizely variable after initialization
   optimizely.push({
