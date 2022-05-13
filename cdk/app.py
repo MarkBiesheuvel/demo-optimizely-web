@@ -103,7 +103,7 @@ class OptimizelyWebStack(Stack):
 
         # Generate synthetic traffic to the website
         canary = synthetics.Canary(self, 'Canary',
-            schedule=synthetics.Schedule.rate(Duration.minutes(1)),
+            schedule=synthetics.Schedule.rate(Duration.minutes(20)),
             success_retention_period=Duration.days(1),
             failure_retention_period=Duration.days(7),
             test=synthetics.Test.custom(
