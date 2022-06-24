@@ -103,21 +103,6 @@ class OptimizelyWebStack(Stack):
             zone=zone,
         )
 
-        # Generate synthetic traffic to the website
-        canary = synthetics.Canary(self, 'Canary',
-            schedule=synthetics.Schedule.rate(Duration.minutes(20)),
-            success_retention_period=Duration.days(1),
-            failure_retention_period=Duration.days(7),
-            test=synthetics.Test.custom(
-                code=synthetics.Code.from_asset('./src/canary'),
-                handler='index.handler'
-            ),
-            runtime=synthetics.Runtime.SYNTHETICS_NODEJS_PUPPETEER_3_5,
-            environment_variables={
-                'URL': 'https://{}'.format(subdomain)
-            }
-        )
-
 
 app = App()
 OptimizelyWebStack(app, 'OptimizelyWeb',
