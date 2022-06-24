@@ -41,6 +41,9 @@ class OptimizelyWebStack(Stack):
             runtime=lambda_.Runtime.NODEJS_14_X,
             handler='index.handler',
             code=lambda_.Code.from_asset('./src/webhook'),
+            environment={
+                'BUCKET_NAME': bucket.bucket_name
+            }
         )
         function.add_function_url(
             auth_type=lambda_.FunctionUrlAuthType.NONE

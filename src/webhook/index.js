@@ -1,6 +1,7 @@
 const http = require('https')
 const AWS = require('aws-sdk')
 const s3 = new AWS.S3()
+const { BUCKET_NAME } = process.env
 
 exports.handler = async (event) => {
   const body = JSON.parse(event.body)
@@ -25,7 +26,7 @@ exports.handler = async (event) => {
   })
 
   await s3.putObject({
-    Bucket: 'optimizelyweb-storage07f31ebc-15ssx32jjbdkg',
+    Bucket: BUCKET_NAME,
     Key: 'optimizely.js',
     Body: await request
   }).promise()
