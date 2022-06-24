@@ -9,122 +9,43 @@
     <script src="optimizely.js"></script>
   </head>
   <body>
-    <div class="container p-3">
 
-      <header>
-        <div class="p-3 pb-md-4 mx-auto text-center">
-          <h1 class="display-4 fw-normal">Demo Optimizely Web</h1>
-          <p class="fs-5 text-muted">
-            This is a static web page to demonstrate the functionality of Optimizely Web.<br>
-            Some elements below are modified based on an experiment.
-          </p>
+    <nav class="py-2 bg-light border-bottom">
+      <div class="container d-flex flex-wrap">
+        <ul class="nav me-auto">
+          <li class="nav-item"><a href="" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
+          <li class="nav-item"><a href="custom-event.html" class="nav-link link-dark px-2">Custom event</a></li>
+          <li class="nav-item"><a href="extensions.html" class="nav-link link-dark px-2">Extensions</a></li>
+          <li class="nav-item"><a href="flash-of-content.html" class="nav-link link-dark px-2">Flash of content</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header class="py-3 mb-4 border-bottom">
+      <div class="container d-flex flex-wrap justify-content-center">
+        <span class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none fs-4">
+          Demo Optimizely Web
+        </span>
+      </div>
+    </header>
+
+    <div class="px-4 py-5 my-5 text-center">
+      <h1 class="display-5 fw-bold">Home page</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+          This website is used to demonstrate features of Optimizely Web Experimentation.
+          For example, the Home page contains an A/B test and the Flash of content page contains a demonstration of why it is advised to load the Optimizely snippet synchronously.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <button type="button" id="primary" class="btn btn-primary btn-lg px-4 gap-3">
+            Primary call-to-action
+          </button>
+          <button type="button" id="secondary" class="btn btn-outline-secondary btn-lg px-4">
+            Secondary call-to-action
+          </button>
         </div>
-      </header>
-
-      <main>
-        <div class="row row-cols-1 row-cols-lg-3 mb-3">
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-              <div class="card-header py-3">
-                <h4 class="my-0 fw-normal">Query parameters</h4>
-              </div>
-              <div class="card-body">
-                <p class="card-text">
-                  By adding a query parameter at the end of the URL, it is possible to force certain settings within Optimizely.
-                </p>
-                <div class="d-grid gap-2">
-                  <a href="?optimizely_disable=true" class="btn btn-outline-danger">
-                    Disable Optimizely
-                  </a>
-                  <a href="?optimizely_x=21538030578" class="btn btn-outline-primary">
-                    Original variant
-                  </a>
-                  <a href="?optimizely_x=21547480579" class="btn btn-outline-primary">
-                    Variant #1
-                  </a>
-                  <a href="?optimizely_log=info" class="btn btn-outline-dark">
-                    Increase log level
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-              <div class="card-header py-3">
-                <h4 class="my-0 fw-normal">Hold events</h4>
-              </div>
-              <div class="card-body">
-                <p class="card-text">
-                  By default, this page does run experiments but does not send any events back to Optimizely. However, events are queued in LocalStorage, so once you allow tracking, all events will be send to Optimizely.
-                </p>
-                <div class="d-grid gap-2">
-                  <button type="button" class="btn btn btn-outline-success" id="consent-true">
-                    Allow tracking
-                  </button>
-                  <button type="button" class="btn btn btn-outline-danger" id="consent-false">
-                    Disallow tracking
-                  </button>
-                  <button type="button" class="btn btn btn-outline-dark" id="consent-null">
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-              <div class="card-header py-3">
-                <h4 class="my-0 fw-normal">Visual tags</h4>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title fw-normal">Product</h5>
-                <p class="card-text">
-                  This is a product description. This is not that important. What is important is the price that is displayed below, since it is collected by a visual tag.
-                </p>
-              </div>
-              <div class="card-footer text-muted">
-                Price: &euro; <span>29.95</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm border-primary">
-              <div class="card-header py-3 text-white bg-primary border-primary">
-                <h4 class="my-0 fw-normal">Click event</h4>
-              </div>
-              <div class="card-body">
-                <p>
-                  By clicking the button below, you will trigger a click event.
-                </p>
-                <button type="button" class="w-100 btn btn-lg btn-outline-primary" id="addtocart">
-                  Add to cart
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm border-success">
-              <div class="card-header py-3 text-white bg-success border-success">
-                <h4 class="my-0 fw-normal">Custom event</h4>
-              </div>
-              <div class="card-body">
-                <p>
-                  By clicking the button below, you will trigger a custom event.
-                </p>
-                <button type="button" class="w-100 btn btn-lg btn-outline-success" id="purchase">
-                  Purchase
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </main>
+      </div>
     </div>
+
   </body>
 </html>
