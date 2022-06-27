@@ -72,19 +72,6 @@
   }
 
   /**
-   * Send a revenue event to Optimizely
-   */
-  const revenueEvent = (name, revenue) => {
-    optimizely.push({
-      type: 'event',
-      eventName: name,
-      tags: {
-        revenue: window.Math.round(revenue * 100) // Convert to cents
-      }
-    })
-  }
-
-  /**
    * Send custom attributes to Optimizely
    */
   const userAttributes = (attributes) => {
@@ -99,7 +86,26 @@
     // Now that window.optimizely has been Initialized; store it in our locally scoped variable again
     optimizely = window.optimizely
 
-    // TODO: code that relies on `optimizely.get`
+    const utils = optimizely.get('utils')
+
+    // Look for any buttons with the data-action="buy" property and add click listeners on them
+    utils.observeSelector('[data-action="buy"]', (button) => {
+      // Retrieve price from data-* attribute
+      const price = parseInt(button.dataset.price)
+      // Add click listener
+      button.addEventListener('click', () => {
+        // Send custom event with revenue data to Optimizely
+        optimizely.push({
+          type: 'event',
+          eventName: 'purchase',
+          tags: {
+            revenue: price
+          }
+        })
+      })
+    }, {
+      timeout: 5000 // Stop observer after 5 seconds to avoid slowing down the page
+    })
   }
 
   // Push isCanary as a custom attribute

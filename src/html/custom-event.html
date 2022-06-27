@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Demo Optimizely Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="theme-color" content="#343a40">
+    <script src="script.js"></script>
+    <script src="optimizely.js"></script>
+  </head>
+  <body>
+
+    <nav class="py-2 bg-light border-bottom">
+      <div class="container d-flex flex-wrap">
+        <ul class="nav me-auto">
+          <li class="nav-item"><a href="/" class="nav-link link-dark px-2">Home</a></li>
+          <li class="nav-item"><a href="/custom-event.html" class="nav-link link-dark px-2 active">Custom event</a></li>
+          <li class="nav-item"><a href="/extensions.html" class="nav-link link-dark px-2">Extensions</a></li>
+          <li class="nav-item"><a href="/flash-of-content.html" class="nav-link link-dark px-2">Flash of content</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header class="py-3 mb-4 border-bottom">
+      <div class="container d-flex flex-wrap justify-content-center">
+        <span class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none fs-4">
+          Demo Optimizely Web
+        </span>
+      </div>
+    </header>
+
+    <div class="px-4 py-5 my-5 text-center">
+      <h1 class="display-5 fw-bold">Custom event</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+          This page will send a custom event with revenue data to Optimizely when you click the "Buy now" button on one of the products below.
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-3 g-3">
+
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Cheapest product</h5>
+              <p class="card-text">
+                Product description of the cheapest product.
+                It does not cost that much money, so why not give it a try.
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">&euro; 12,99</small>
+                <button type="button" class="btn btn-sm btn-outline-success" data-action="buy" data-price="1299">Buy now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Middle product</h5>
+              <p class="card-text">
+                Product description of the middle product.
+                It is a bit more expensive, but you are getting significantly better value for money.
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">&euro; 44,99</small>
+                <button type="button" class="btn btn-sm btn-outline-success" data-action="buy" data-price="4499">Buy now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Most expensive product</h5>
+              <p class="card-text">
+                Product description of the most expensive product.
+                It costs a lot of money, but it has the highest quality.
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">&euro; 124,99</small>
+                <button type="button" class="btn btn-sm btn-outline-success" data-action="buy" data-price="12499">Buy now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>
