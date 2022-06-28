@@ -1,0 +1,13 @@
+[
+  "and",
+  [
+    "or",
+    [
+      "or",
+      {
+        "value": "DE",
+        "type": "location"
+      }
+    ]
+  ]
+]

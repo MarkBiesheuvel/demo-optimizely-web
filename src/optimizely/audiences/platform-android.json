@@ -1,0 +1,13 @@
+[
+  "and",
+  [
+    "or",
+    [
+      "or",
+      {
+        "value": "android",
+        "type": "platform"
+      }
+    ]
+  ]
+]
