@@ -44,8 +44,17 @@
       <div class="col-lg-6 mx-auto">
         <p class="lead mb-4">
           It is recommended to load the Optimizely JavaScript snippet synchronously. This will ensure that experiment variations are applied as the page loads. If the snippet is loaded asynchronously instead, some content might already be seen to the user before it is modified. This leads to a flash or content or flickering.
-          This phenomenon is demonstrated on this page.
+          This page does load the snippet asynchronously and therefore has flickering.<br><br>
+          Did you see the buttons change color?
         </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          <button type="button" id="primary" class="btn btn-primary btn-lg px-4 gap-3">
+            Yes
+          </button>
+          <button type="button" id="secondary" class="btn btn-secondary btn-lg px-4">
+            No
+          </button>
+        </div>
       </div>
     </div>
   </body>
