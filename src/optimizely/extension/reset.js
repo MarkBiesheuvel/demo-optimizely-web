@@ -1,6 +1,6 @@
 /* global extension */
-const extensionElement = document.getElementById(`optimizely-extension-${extension.$instance}`)
+const element = document.getElementById(`optimizely-extension-${extension.$instance}`)
 
-if (extensionElement) {
-  extensionElement.parentElement.removeChild(extensionElement)
+if (element) {
+  element.parentElement.removeChild(element)
 }

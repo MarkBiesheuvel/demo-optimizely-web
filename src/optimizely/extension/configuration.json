@@ -1,0 +1,28 @@
+{
+  "plugin_type": "widget",
+  "name": "Card",
+  "edit_page_url": "https://web.optimizely.demo.training/extensions.html",
+  "form_schema": [
+    {
+      "default_value": "",
+      "field_type": "multi_text",
+      "name": "text",
+      "label": "Body",
+      "options": null
+    },
+    {
+      "default_value": "",
+      "field_type": "text",
+      "name": "title",
+      "label": "Title",
+      "options": null
+    }
+  ],
+  "description": "Bootstrap card inside a column",
+  "options": {
+    "html": "<div id=\"optimizely-extension-{{ extension.$instance }}\" class=\"col\">\n  <div class=\"card\">\n    <div class=\"card-body\">\n      <h5 class=\"card-title\">{{ extension.title }}</h5>\n      <p class=\"card-text\">\n        {{ extension.text }}\n      </p>\n    </div>\n  </div>\n</div>\n",
+    "css": "",
+    "apply_js": "/* global extension */\nconst utils = window.optimizely.get('utils')\n\nutils.waitForElement('#target')\n  .then((element) => {\n    element.insertAdjacentHTML('beforeend', extension.$html)\n  })\n",
+    "undo_js": "/* global extension */\nconst element = document.getElementById(`optimizely-extension-${extension.$instance}`)\n\nif (element) {\n  element.parentElement.removeChild(element)\n}\n"
+  }
+}
