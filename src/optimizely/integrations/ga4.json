@@ -1,0 +1,9 @@
+{
+  "plugin_type": "analytics_integration",
+  "name": "Custom GA4 integration",
+  "form_schema": [],
+  "description": "",
+  "options": {
+    "track_layer_decision": "const state=window.optimizely.get('state');\nconst utils=window.optimizely.get('utils');\nconst campaignObject=state.getDecisionObject({'campaignId':campaignId});\n\nif(campaignObject !== null){\n  utils.waitUntil(() => {\n    return typeof(window.gtag) === 'function';\n  }).then(() => {\n  \twindow.gtag('event', 'optimizely-decision', {\n      Experiment: campaignObject.experiment,\n      Variation:campaignObject.variation\n    });\n  });\n}\n"
+  }
+}
