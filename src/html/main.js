@@ -9,7 +9,7 @@
     // A simple setTimeout to trigger the time_on_page event
     setTimeout(() => {
 
-      // If the threshold is adjusted, this will be recordered under a different event name
+      // If the threshold is adjusted, this will be recorded under a different event name
       // Currently there is a single event for all pages, if desired, the page name could be included in the event name
       const eventName = `time_on_page_${threshold}s`
 
@@ -26,8 +26,8 @@
   }
 
   /**
-   * Send an Optimizely event when a vistor is on the entire site for more than `threshold` seconds
-   * To persist a timer between multiple pageviews a variable in LocalStorage is used.
+   * Send an Optimizely event when a visitor is on the entire site for more than `threshold` seconds
+   * To persist a timer between multiple page views a variable in LocalStorage is used.
    */
   const timeOnSite = ({ threshold, interval, storageKey, reset }) => {
     // Initialization of time on site timer
@@ -40,19 +40,19 @@
       return
     }
 
-    // Regularly increment a value on LocalStorage in order to persist the timer accros multiple pageviews
+    // Regularly increment a value on LocalStorage in order to persist the timer across multiple page views
     const intervalId = setInterval(() => {
 
       // Increment timer with elapsed time
       timer += interval
 
-      // Persits timer in LocalStorage
+      // Persists timer in LocalStorage
       localStorage.setItem(storageKey, timer.toString())
 
       // If the threshold is exceeded ...
       if (threshold <= timer) {
 
-        // If the threshold is adjusted, this will be recordered under a different event name
+        // If the threshold is adjusted, this will be recorded under a different event name
         const eventName = `time_on_site_${threshold}s`
 
         // TODO: Add desired tags here
