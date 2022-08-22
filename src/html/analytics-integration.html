@@ -7,6 +7,16 @@
     <meta name="theme-color" content="#343a40">
     <script src="main.js"></script>
     <script src="optimizely.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DG27PFM1RC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function() {
+        window.dataLayer.push(arguments);
+      };
+      gtag('js', new Date());
+      gtag('config', 'G-DG27PFM1RC');
+    </script>
   </head>
   <body>
 
@@ -16,10 +26,10 @@
           <li class="nav-item"><a href="/" class="nav-link link-dark px-2">Home</a></li>
           <li class="nav-item"><a href="/custom-event.html" class="nav-link link-dark px-2">Custom event</a></li>
           <li class="nav-item"><a href="/extensions.html" class="nav-link link-dark px-2">Extensions</a></li>
-          <li class="nav-item"><a href="/personalization.html" class="nav-link link-dark px-2 active">Personalization campaign</a></li>
+          <li class="nav-item"><a href="/personalization.html" class="nav-link link-dark px-2">Personalization campaign</a></li>
           <li class="nav-item"><a href="/flash-of-content.html" class="nav-link link-dark px-2">Flash of content</a></li>
           <li class="nav-item"><a href="/hold-events.html" class="nav-link link-dark px-2">Hold & send events</a></li>
-          <li class="nav-item"><a href="/analytics-integration.html" class="nav-link link-dark px-2">Analytics Integration</a></li>
+          <li class="nav-item"><a href="/analytics-integration.html" class="nav-link link-dark px-2 active">Analytics Integration</a></li>
         </ul>
       </div>
     </nav>
@@ -33,42 +43,11 @@
     </header>
 
     <div class="p-4 my-4 text-center">
-      <h1 class="display-5 fw-bold">Personalization campaign</h1>
+      <h1 class="display-5 fw-bold">Analytics Integration</h1>
       <div class="col-lg-6 mx-auto">
         <p class="lead mb-4">
-          This page will personalize content based on attributes of the visitor.
-          The left card will recommend to either bookmark the website or download the app from the Google Play Store or Apple App Store depending on device. The right card will mention that international shipping is available or specifically mention that shipping is available for the country of the visitor.
+            TODO: write description and create A/B test
         </p>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="row row-cols-1 row-cols-md-2 g-3">
-
-        <!-- Replace this with Google Play Store or Apple App Store  -->
-        <div class="col">
-          <div id="app" class="card">
-            <div class="card-body">
-              <h5 class="card-title">Bookmark</h5>
-              <p class="card-text">
-                Bookmark this page, so you can easily find your way back.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Replace this with country of visitor  -->
-        <div class="col">
-          <div id="shipping" class="card">
-            <div class="card-body">
-              <h5 class="card-title">Shipping</h5>
-              <p class="card-text">
-                We offer international shipping to more than 150 countries.
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 
