@@ -7,25 +7,43 @@
     // Now that window.optimizely has been Initialized; store it in our locally scoped variable again
     optimizely = window.optimizely
 
+    // Util library of Optimizely
     const utils = optimizely.get('utils')
+    const observerOptions = {
+      timeout: 5000 // Stop observer after 5 seconds to avoid slowing down the page
+    }
 
-    utils.observeSelector('#sendEvents', (button) => {
-      // Add click listener
-      button.addEventListener('click', () => {
+    // Add click listener on Allow button
+    utils.observeSelector('#allow', (allowButton) => {
+      allowButton.addEventListener('click', () => {
+        // Set cookie to remember data sharing is allowed
+        document.cookie = 'optimizelyAllowDataSharing=true; Max-Age=15780000'
         // Allow events to be send again
         optimizely.push({
           type: 'sendEvents'
         })
       })
-    }, {
-      timeout: 5000 // Stop observer after 5 seconds to avoid slowing down the page
-    })
+    }, observerOptions)
+
+    // Add click listener on Deny button
+    utils.observeSelector('#deny', (denyButton) => {
+      denyButton.addEventListener('click', () => {
+        // Delete Optimizely data sharing cookie
+        document.cookie = 'optimizelyAllowDataSharing=false; Max-Age=-1'
+        // Prevent events from being send to Optimizely
+        optimizely.push({
+          type: 'holdEvents'
+        })
+      })
+    }, observerOptions)
   }
 
-  // Prevent Optimizely from sending events back to logx.optimizely.com
-  optimizely.push({
-    type: 'holdEvents'
-  })
+  // Prevent events from being send to Optimizely if the data sharing cookie is not set
+  if (!document.cookie.includes('optimizelyAllowDataSharing=true')) {
+    optimizely.push({
+      type: 'holdEvents'
+    })
+  }
 
   // Only run the part of the code that depends on the optimizely variable after initialization
   optimizely.push({
